@@ -121,7 +121,11 @@ lazy_static! {
         "Count of blocks successfully produced."
     );
     pub static ref BLOCK_PRODUCTION_TIMES: Result<Histogram> =
-        try_create_histogram("beacon_block_production_seconds", "Full runtime of block production");
+        try_create_histogram_with_buckets(
+        "beacon_block_production_seconds",
+        "Full runtime of block production",
+        Ok(vec![0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 0.8, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 3.0, 5.0, 10.0])
+    );
     pub static ref BLOCK_PRODUCTION_FORK_CHOICE_TIMES: Result<Histogram> = try_create_histogram(
         "beacon_block_production_fork_choice_seconds",
         "Time taken to run fork choice before block production"
@@ -131,9 +135,10 @@ lazy_static! {
         "Time taken for fork choice to compute the proposer head before block production",
         exponential_buckets(1e-3, 2.0, 8)
     );
-    pub static ref BLOCK_PRODUCTION_STATE_LOAD_TIMES: Result<Histogram> = try_create_histogram(
+    pub static ref BLOCK_PRODUCTION_STATE_LOAD_TIMES: Result<Histogram> = try_create_histogram_with_buckets(
         "beacon_block_production_state_load_seconds",
-        "Time taken to load the base state for block production"
+        "Time taken to load the base state for block production",
+        Ok(vec![0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 0.8, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 3.0, 5.0, 10.0])
     );
     pub static ref BLOCK_PRODUCTION_SLOT_PROCESS_TIMES: Result<Histogram> = try_create_histogram(
         "beacon_block_production_slot_process_seconds",
@@ -846,14 +851,12 @@ lazy_static! {
     pub static ref BEACON_BLOCK_OBSERVED_SLOT_START_DELAY_TIME: Result<Histogram> = try_create_histogram_with_buckets(
         "beacon_block_observed_slot_start_delay_time",
         "Duration between the start of the block's slot and the time the block was observed.",
-        // [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50]
-        decimal_buckets(-1,2)
+        Ok(vec![0.1, 0.2, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 10.0])
     );
     pub static ref BEACON_BLOCK_IMPORTED_OBSERVED_DELAY_TIME: Result<Histogram> = try_create_histogram_with_buckets(
         "beacon_block_imported_observed_delay_time",
         "Duration between the time the block was observed and the time when it was imported.",
-        // [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5]
-        decimal_buckets(-2,0)
+        Ok(vec![0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 0.8, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 10.0])
     );
     pub static ref BEACON_BLOCK_HEAD_IMPORTED_DELAY_TIME: Result<Histogram> = try_create_histogram_with_buckets(
         "beacon_block_head_imported_delay_time",

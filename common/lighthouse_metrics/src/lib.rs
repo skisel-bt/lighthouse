@@ -100,7 +100,7 @@ pub fn try_create_float_gauge(name: &str, help: &str) -> Result<Gauge> {
 /// Attempts to create a `Histogram`, returning `Err` if the registry does not accept the counter
 /// (potentially due to naming conflict).
 pub fn try_create_histogram(name: &str, help: &str) -> Result<Histogram> {
-    try_create_histogram_with_buckets(name, help, Ok(DEFAULT_BUCKETS.to_vec()))
+    try_create_histogram_with_buckets(name, help, Ok(vec![0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 0.8, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 3.0, 5.0, 10.0]))
 }
 
 /// Attempts to create a `Histogram` with specified buckets, returning `Err` if the registry does not accept the counter
@@ -123,7 +123,7 @@ pub fn try_create_histogram_vec(
     help: &str,
     label_names: &[&str],
 ) -> Result<HistogramVec> {
-    try_create_histogram_vec_with_buckets(name, help, Ok(DEFAULT_BUCKETS.to_vec()), label_names)
+    try_create_histogram_vec_with_buckets(name, help, Ok(vec![0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 0.8, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 3.0, 5.0, 10.0]), label_names)
 }
 
 /// Attempts to create a `HistogramVec` with specified buckets, returning `Err` if the registry does not accept the counter
